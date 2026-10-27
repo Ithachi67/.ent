@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ASP.NET Practical Exam Quick Guide</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--text:#1f2937;--muted:#667085;--line:#dfe3e8;--accent:#1d4ed8;--code:#111827}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;padding:16px}
+.top{max-width:1000px;margin:auto}.top h1{margin:0 0 5px;font-size:24px}.top p{margin:0;color:var(--muted)}
+input{width:100%;margin-top:12px;padding:11px;border:1px solid var(--line);border-radius:8px;font-size:15px}
+main{max-width:1000px;margin:22px auto;padding:0 14px 60px}.module h2{margin:28px 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:17px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.head h3{margin:6px 0 8px;font-size:19px}
+.tag{display:inline-block;background:#eef2ff;color:#3730a3;padding:3px 8px;border-radius:99px;font-size:12px;font-weight:bold}
+button{border:0;border-radius:7px;padding:8px 10px;background:var(--accent);color:#fff;cursor:pointer;white-space:nowrap}
+details{border-top:1px solid var(--line);padding-top:10px;margin-top:9px}summary{font-weight:bold;cursor:pointer}
+pre{background:var(--code);color:#f9fafb;padding:14px;border-radius:8px;overflow:auto;font-size:13px;white-space:pre}
+li{margin:5px 0}.cheat{background:#fff7ed;border:1px solid #fed7aa;padding:15px;border-radius:10px;margin-bottom:18px}
+.small{color:var(--muted);font-size:13px}.hidden{display:none}
+@media(max-width:600px){.head{display:block}.copy{margin-bottom:5px}.top h1{font-size:20px}}
+</style>
+</head>
+<body>
+<header><div class="top">
+<h1>ASP.NET Practical Exam — Quick Guide</h1>
+<p>Module 1 + Module 2 • Steps • Code • Viva</p>
+<input id="search" placeholder="Search: delegate, PWA, factorial, validation..." oninput="filterCards()">
+</div></header>
+<main>
+<div class="cheat"><b>Must remember:</b> Delegate = method reference • Overloading = same name/different parameters •
+PWA = HTML + Manifest + Service Worker • CRUD = POST/Create, GET/Read, PUT/Update, DELETE/Delete •
+Web API usually returns JSON.</div>
+<section class="module"><h2>Module 1 — C# &amp; ASP.NET Web Forms</h2>
+
+        <article class="card" data-search="1a. mvc basic arithmetic operations asp.net mvc mvc = model, view, controller. controller handles requests; view displays ui. mvc separates application responsibilities.">
+          <div class="head"><div><span class="tag">ASP.NET MVC</span><h3>1A. MVC Basic Arithmetic Operations</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create ASP.NET Core MVC project.</li><li>Put the controller code in HomeController.cs.</li><li>Replace Views/Home/Index.cshtml with the view code.</li><li>Run with Ctrl+F5.</li></ol></details>
+          <details><summary>Code</summary><pre><code>// Controller: HomeController.cs
+using Microsoft.AspNetCore.Mvc;
+
+public class HomeController : Controller
+{
+    public IActionResult Index() =&gt; View();
+
+    [HttpPost]
+    public IActionResult Index(double a, double b, string op)
+    {
+        double result = op switch
+        {
+            &quot;Add&quot; =&gt; a + b,
+            &quot;Subtract&quot; =&gt; a - b,
+            &quot;Multiply&quot; =&gt; a * b,
+            &quot;Divide&quot; =&gt; b != 0 ? a / b : 0,
+            _ =&gt; 0
+        };
+        ViewBag.Result = result;
+        return View();
+    }
+}</code></pre><pre><code>&lt;!-- View: Index.cshtml --&gt;
+&lt;form method=&quot;post&quot;&gt;
+  &lt;input type=&quot;number&quot; step=&quot;any&quot; name=&quot;a&quot; placeholder=&quot;First number&quot; required&gt;
+  &lt;input type=&quot;number&quot; step=&quot;any&quot; name=&quot;b&quot; placeholder=&quot;Second number&quot; required&gt;
+  &lt;button name=&quot;op&quot; value=&quot;Add&quot;&gt;Add&lt;/button&gt;
+  &lt;button name=&quot;op&quot; value=&quot;Subtract&quot;&gt;Subtract&lt;/button&gt;
+  &lt;button name=&quot;op&quot; value=&quot;Multiply&quot;&gt;Multiply&lt;/button&gt;
+  &lt;button name=&quot;op&quot; value=&quot;Divide&quot;&gt;Divide&lt;/button&gt;
+&lt;/form&gt;
+&lt;h3&gt;Result: @ViewBag.Result&lt;/h3&gt;</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>MVC = Model, View, Controller.</li><li>Controller handles requests; View displays UI.</li><li>MVC separates application responsibilities.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="1b. floyd’s triangle c# console outer loop controls rows. inner loop controls numbers in each row. floyd’s triangle contains consecutive natural numbers.">
+          <div class="head"><div><span class="tag">C# Console</span><h3>1B. Floyd’s Triangle</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create a Console App.</li><li>Paste the code into Program.cs.</li><li>Run and enter number of rows.</li></ol></details>
+          <details><summary>Code</summary><pre><code>using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.Write(&quot;Enter rows: &quot;);
+        int n = Convert.ToInt32(Console.ReadLine());
+        int num = 1;
+
+        for (int i = 1; i &lt;= n; i++)
+        {
+            for (int j = 1; j &lt;= i; j++)
+                Console.Write(num++ + &quot; &quot;);
+            Console.WriteLine();
+        }
+    }
+}</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>Outer loop controls rows.</li><li>Inner loop controls numbers in each row.</li><li>Floyd’s triangle contains consecutive natural numbers.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="1c. sort 10 city names c# console array stores multiple values of the same type. array.sort() sorts an array. foreach iterates through array elements.">
+          <div class="head"><div><span class="tag">C# Console</span><h3>1C. Sort 10 City Names</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create Console App.</li><li>Enter 10 city names.</li><li>Array.Sort() arranges them in ascending order.</li></ol></details>
+          <details><summary>Code</summary><pre><code>using System;
+
+class Program
+{
+    static void Main()
+    {
+        string[] cities = new string[10];
+
+        Console.WriteLine(&quot;Enter 10 city names:&quot;);
+        for (int i = 0; i &lt; 10; i++)
+            cities[i] = Console.ReadLine();
+
+        Array.Sort(cities);
+
+        Console.WriteLine(&quot;\nSorted Cities:&quot;);
+        foreach (string city in cities)
+            Console.WriteLine(city);
+    }
+}</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>Array stores multiple values of the same type.</li><li>Array.Sort() sorts an array.</li><li>foreach iterates through array elements.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="2a. function overloading c# console function overloading = same method name, different parameters. it is compile-time polymorphism.">
+          <div class="head"><div><span class="tag">C# Console</span><h3>2A. Function Overloading</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create Console App.</li><li>Paste and run.</li></ol></details>
+          <details><summary>Code</summary><pre><code>using System;
+
+class Calculator
+{
+    public int Add(int a, int b) =&gt; a + b;
+    public int Add(int a, int b, int c) =&gt; a + b + c;
+    public double Add(double a, double b) =&gt; a + b;
+}
+
+class Program
+{
+    static void Main()
+    {
+        Calculator c = new Calculator();
+        Console.WriteLine(c.Add(10, 20));
+        Console.WriteLine(c.Add(10, 20, 30));
+        Console.WriteLine(c.Add(10.5, 20.5));
+    }
+}</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>Function overloading = same method name, different parameters.</li><li>It is compile-time polymorphism.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="2b. inheritance c# console inheritance lets a child class acquire members of a parent class. c# does not support multiple inheritance through classes. &#x27;:&#x27; is used to inherit/implement.">
+          <div class="head"><div><span class="tag">C# Console</span><h3>2B. Inheritance</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create Console App.</li><li>Paste and run.</li><li>For viva remember: Single, Multilevel, Hierarchical; multiple inheritance is achieved through interfaces.</li></ol></details>
+          <details><summary>Code</summary><pre><code>using System;
+
+class Animal
+{
+    public void Eat() =&gt; Console.WriteLine(&quot;Animal is eating&quot;);
+}
+
+class Dog : Animal
+{
+    public void Bark() =&gt; Console.WriteLine(&quot;Dog is barking&quot;);
+}
+
+class Program
+{
+    static void Main()
+    {
+        Dog d = new Dog();
+        d.Eat();
+        d.Bark();
+    }
+}</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>Inheritance lets a child class acquire members of a parent class.</li><li>C# does not support multiple inheritance through classes.</li><li>&#x27;:&#x27; is used to inherit/implement.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="2c. constructor overloading c# console constructor initializes an object. constructor has the same name as its class. constructor has no return type. overloading uses different parameter lists.">
+          <div class="head"><div><span class="tag">C# Console</span><h3>2C. Constructor Overloading</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create Console App.</li><li>Paste and run.</li></ol></details>
+          <details><summary>Code</summary><pre><code>using System;
+
+class Student
+{
+    string name;
+    int age;
+
+    public Student() { Console.WriteLine(&quot;Default Constructor&quot;); }
+    public Student(string n) { name = n; }
+    public Student(string n, int a) { name = n; age = a; }
+
+    public void Display() =&gt; Console.WriteLine(name + &quot; &quot; + age);
+}
+
+class Program
+{
+    static void Main()
+    {
+        Student s1 = new Student();
+        Student s2 = new Student(&quot;Rahul&quot;);
+        Student s3 = new Student(&quot;Amit&quot;, 20);
+        s3.Display();
+    }
+}</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>Constructor initializes an object.</li><li>Constructor has the same name as its class.</li><li>Constructor has no return type.</li><li>Overloading uses different parameter lists.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="2d. interface c# console an interface defines a contract. a class implements an interface. interfaces can be used for multiple-interface inheritance.">
+          <div class="head"><div><span class="tag">C# Console</span><h3>2D. Interface</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create Console App.</li><li>Paste and run.</li></ol></details>
+          <details><summary>Code</summary><pre><code>using System;
+
+interface IAnimal
+{
+    void Sound();
+}
+
+class Dog : IAnimal
+{
+    public void Sound() =&gt; Console.WriteLine(&quot;Dog barks&quot;);
+}
+
+class Program
+{
+    static void Main()
+    {
+        Dog d = new Dog();
+        d.Sound();
+    }
+}</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>An interface defines a contract.</li><li>A class implements an interface.</li><li>Interfaces can be used for multiple-interface inheritance.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="2e. delegate and event c# console delegate = type-safe reference to a method. event is based on delegates. += subscribes a method to an event.">
+          <div class="head"><div><span class="tag">C# Console</span><h3>2E. Delegate and Event</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create Console App.</li><li>Paste and run.</li></ol></details>
+          <details><summary>Code</summary><pre><code>using System;
+
+class Program
+{
+    public delegate void Notify();
+    public static event Notify MessageSent;
+
+    static void ShowMessage()
+    {
+        Console.WriteLine(&quot;Event executed!&quot;);
+    }
+
+    static void Main()
+    {
+        MessageSent += ShowMessage;
+        MessageSent?.Invoke();
+    }
+}</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>Delegate = type-safe reference to a method.</li><li>Event is based on delegates.</li><li>+= subscribes a method to an event.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="2f. exception handling c# console try contains risky code. catch handles an exception. finally normally runs whether an exception occurs or not.">
+          <div class="head"><div><span class="tag">C# Console</span><h3>2F. Exception Handling</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create Console App.</li><li>Try b = 0 to demonstrate the exception.</li></ol></details>
+          <details><summary>Code</summary><pre><code>using System;
+
+class Program
+{
+    static void Main()
+    {
+        try
+        {
+            Console.Write(&quot;Enter a: &quot;);
+            int a = Convert.ToInt32(Console.ReadLine());
+            Console.Write(&quot;Enter b: &quot;);
+            int b = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine(a / b);
+        }
+        catch (DivideByZeroException)
+        {
+            Console.WriteLine(&quot;Cannot divide by zero.&quot;);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        finally
+        {
+            Console.WriteLine(&quot;Program completed.&quot;);
+        }
+    }
+}</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>try contains risky code.</li><li>catch handles an exception.</li><li>finally normally runs whether an exception occurs or not.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="3a. arithmetic using delegate c# console a delegate stores/references compatible methods. method signature must match the delegate signature.">
+          <div class="head"><div><span class="tag">C# Console</span><h3>3A. Arithmetic Using Delegate</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create Console App.</li><li>Paste and run.</li></ol></details>
+          <details><summary>Code</summary><pre><code>using System;
+
+class Program
+{
+    delegate double Operation(double a, double b);
+
+    static double Add(double a, double b) =&gt; a + b;
+    static double Subtract(double a, double b) =&gt; a - b;
+    static double Multiply(double a, double b) =&gt; a * b;
+    static double Divide(double a, double b) =&gt; a / b;
+
+    static void Main()
+    {
+        Operation op = Add;
+        Console.WriteLine(&quot;Add = &quot; + op(10, 5));
+        op = Subtract;
+        Console.WriteLine(&quot;Subtract = &quot; + op(10, 5));
+        op = Multiply;
+        Console.WriteLine(&quot;Multiply = &quot; + op(10, 5));
+        op = Divide;
+        Console.WriteLine(&quot;Divide = &quot; + op(10, 5));
+    }
+}</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>A delegate stores/references compatible methods.</li><li>Method signature must match the delegate signature.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="3b. multicast delegate c# console multicast delegate references multiple methods. += adds a method to its invocation list.">
+          <div class="head"><div><span class="tag">C# Console</span><h3>3B. Multicast Delegate</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create Console App.</li><li>Paste and run. Both methods execute.</li></ol></details>
+          <details><summary>Code</summary><pre><code>using System;
+
+class Program
+{
+    delegate void MyDelegate();
+
+    static void Method1() =&gt; Console.WriteLine(&quot;Method 1&quot;);
+    static void Method2() =&gt; Console.WriteLine(&quot;Method 2&quot;);
+
+    static void Main()
+    {
+        MyDelegate d = Method1;
+        d += Method2;
+        d();
+    }
+}</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>Multicast delegate references multiple methods.</li><li>+= adds a method to its invocation list.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="3c. bankaccount property validation c# console property gives controlled access to data. get reads a value; set assigns a value. private field balance stores the actual value.">
+          <div class="head"><div><span class="tag">C# Console</span><h3>3C. BankAccount Property Validation</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create Console App.</li><li>Paste and run.</li><li>Try b.Balance = -100 to demonstrate validation.</li></ol></details>
+          <details><summary>Code</summary><pre><code>using System;
+
+class BankAccount
+{
+    public int AccountNumber { get; set; }
+    private double balance;
+
+    public double Balance
+    {
+        get { return balance; }
+        set
+        {
+            if (value &gt;= 0) balance = value;
+            else Console.WriteLine(&quot;Balance cannot be negative&quot;);
+        }
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        BankAccount b = new BankAccount();
+        b.AccountNumber = 101;
+        b.Balance = 5000;
+        Console.WriteLine(&quot;Account: &quot; + b.AccountNumber);
+        Console.WriteLine(&quot;Balance: &quot; + b.Balance);
+    }
+}</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>Property gives controlled access to data.</li><li>get reads a value; set assigns a value.</li><li>Private field balance stores the actual value.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="4a. student registration form asp.net web forms web forms uses server controls and events. runat=&quot;server&quot; means the control is processed on the server. groupname makes radiobuttons act as one group.">
+          <div class="head"><div><span class="tag">ASP.NET Web Forms</span><h3>4A. Student Registration Form</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create ASP.NET Web Application (.NET Framework) → Web Forms.</li><li>Open Default.aspx.</li><li>Add Label, TextBox, RadioButtons, DropDownList, CheckBox, Calendar, Button and output Label.</li><li>Double-click Submit and add the C# event code.</li><li>Run with Ctrl+F5.</li></ol></details>
+          <details><summary>Code</summary><pre><code>&lt;!-- Default.aspx controls --&gt;
+&lt;asp:Label ID=&quot;Label1&quot; runat=&quot;server&quot; Text=&quot;Student Name&quot;&gt;&lt;/asp:Label&gt;
+&lt;asp:TextBox ID=&quot;TextBox1&quot; runat=&quot;server&quot;&gt;&lt;/asp:TextBox&gt;&lt;br/&gt;
+
+Gender:
+&lt;asp:RadioButton ID=&quot;RadioButton1&quot; runat=&quot;server&quot; Text=&quot;Male&quot; GroupName=&quot;Gender&quot;/&gt;
+&lt;asp:RadioButton ID=&quot;RadioButton2&quot; runat=&quot;server&quot; Text=&quot;Female&quot; GroupName=&quot;Gender&quot;/&gt;&lt;br/&gt;
+
+Course:
+&lt;asp:DropDownList ID=&quot;DropDownList1&quot; runat=&quot;server&quot;&gt;
+  &lt;asp:ListItem&gt;BSc IT&lt;/asp:ListItem&gt;
+  &lt;asp:ListItem&gt;BSc CS&lt;/asp:ListItem&gt;
+  &lt;asp:ListItem&gt;BCA&lt;/asp:ListItem&gt;
+&lt;/asp:DropDownList&gt;&lt;br/&gt;
+
+&lt;asp:CheckBox ID=&quot;CheckBox1&quot; runat=&quot;server&quot; Text=&quot;Accept Terms &amp; Conditions&quot;/&gt;&lt;br/&gt;
+&lt;asp:Calendar ID=&quot;Calendar1&quot; runat=&quot;server&quot;&gt;&lt;/asp:Calendar&gt;
+&lt;asp:Button ID=&quot;Button1&quot; runat=&quot;server&quot; Text=&quot;Submit&quot; OnClick=&quot;Button1_Click&quot;/&gt;
+&lt;asp:Label ID=&quot;Label2&quot; runat=&quot;server&quot;&gt;&lt;/asp:Label&gt;</code></pre><pre><code>// Default.aspx.cs
+protected void Button1_Click(object sender, EventArgs e)
+{
+    string gender = RadioButton1.Checked ? &quot;Male&quot; :
+                    RadioButton2.Checked ? &quot;Female&quot; : &quot;Not selected&quot;;
+
+    Label2.Text = &quot;Name: &quot; + TextBox1.Text +
+        &quot;&lt;br/&gt;Gender: &quot; + gender +
+        &quot;&lt;br/&gt;Course: &quot; + DropDownList1.SelectedValue +
+        &quot;&lt;br/&gt;Date: &quot; + Calendar1.SelectedDate.ToShortDateString();
+}</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>Web Forms uses server controls and events.</li><li>runat=&quot;server&quot; means the control is processed on the server.</li><li>GroupName makes RadioButtons act as one group.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="4b. validation controls asp.net web forms requiredfieldvalidator checks empty fields. rangevalidator checks a range. comparevalidator compares values. regularexpressionvalidator checks a pattern. validationsummary displays validation messages.">
+          <div class="head"><div><span class="tag">ASP.NET Web Forms</span><h3>4B. Validation Controls</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create a Web Form.</li><li>Add TextBoxes and validators.</li><li>Set ControlToValidate to the matching TextBox ID.</li><li>Run and test empty/invalid values.</li></ol></details>
+          <details><summary>Code</summary><pre><code>&lt;asp:TextBox ID=&quot;txtName&quot; runat=&quot;server&quot;&gt;&lt;/asp:TextBox&gt;
+
+&lt;asp:RequiredFieldValidator
+ ID=&quot;rfvName&quot;
+ runat=&quot;server&quot;
+ ControlToValidate=&quot;txtName&quot;
+ ErrorMessage=&quot;Name is required&quot;
+ ForeColor=&quot;Red&quot;&gt;
+&lt;/asp:RequiredFieldValidator&gt;
+
+&lt;asp:TextBox ID=&quot;txtAge&quot; runat=&quot;server&quot;&gt;&lt;/asp:TextBox&gt;
+
+&lt;asp:RangeValidator
+ ID=&quot;rvAge&quot;
+ runat=&quot;server&quot;
+ ControlToValidate=&quot;txtAge&quot;
+ MinimumValue=&quot;18&quot;
+ MaximumValue=&quot;60&quot;
+ Type=&quot;Integer&quot;
+ ErrorMessage=&quot;Age must be 18 to 60&quot;
+ ForeColor=&quot;Red&quot;&gt;
+&lt;/asp:RangeValidator&gt;
+
+&lt;asp:Button ID=&quot;btnSubmit&quot; runat=&quot;server&quot; Text=&quot;Submit&quot;/&gt;</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>RequiredFieldValidator checks empty fields.</li><li>RangeValidator checks a range.</li><li>CompareValidator compares values.</li><li>RegularExpressionValidator checks a pattern.</li><li>ValidationSummary displays validation messages.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="4c. adrotator asp.net web forms adrotator displays rotating advertisements. advertisement data is commonly stored in an xml file. impressions affects how often an ad is selected.">
+          <div class="head"><div><span class="tag">ASP.NET Web Forms</span><h3>4C. AdRotator</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Add two images to the project.</li><li>Create Ads.xml.</li><li>Add AdRotator to Default.aspx.</li><li>Set AdvertisementFile=&quot;~/Ads.xml&quot; and run.</li></ol></details>
+          <details><summary>Code</summary><pre><code>&lt;!-- Default.aspx --&gt;
+&lt;asp:AdRotator ID=&quot;AdRotator1&quot; runat=&quot;server&quot;
+ AdvertisementFile=&quot;~/Ads.xml&quot; /&gt;</code></pre><pre><code>&lt;!-- Ads.xml --&gt;
+&lt;Advertisements&gt;
+  &lt;Ad&gt;
+    &lt;ImageUrl&gt;image1.jpg&lt;/ImageUrl&gt;
+    &lt;NavigateUrl&gt;https://example.com&lt;/NavigateUrl&gt;
+    &lt;AlternateText&gt;Advertisement 1&lt;/AlternateText&gt;
+    &lt;Impressions&gt;50&lt;/Impressions&gt;
+  &lt;/Ad&gt;
+  &lt;Ad&gt;
+    &lt;ImageUrl&gt;image2.jpg&lt;/ImageUrl&gt;
+    &lt;NavigateUrl&gt;https://example.com&lt;/NavigateUrl&gt;
+    &lt;AlternateText&gt;Advertisement 2&lt;/AlternateText&gt;
+    &lt;Impressions&gt;50&lt;/Impressions&gt;
+  &lt;/Ad&gt;
+&lt;/Advertisements&gt;</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>AdRotator displays rotating advertisements.</li><li>Advertisement data is commonly stored in an XML file.</li><li>Impressions affects how often an ad is selected.</li></ul></details>
+        </article>
+</section>
+<section class="module"><h2>Module 2 — PWA &amp; Web API</h2>
+
+        <article class="card" data-search="1a/1b/2a. college pwa + offline page + service worker pwa pwa = progressive web application. service worker enables caching/offline behavior. manifest describes app metadata. service workers normally require https, with localhost allowed for development.">
+          <div class="head"><div><span class="tag">PWA</span><h3>1A/1B/2A. College PWA + Offline Page + Service Worker</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create a folder CollegePWA.</li><li>Create index.html, manifest.json, service-worker.js and offline.html.</li><li>Use a local web server (for example Visual Studio/VS Code Live Server) rather than opening only with file://.</li><li>Open once while online so files can cache.</li><li>Use browser DevTools → Network → Offline to test.</li></ol></details>
+          <details><summary>Code</summary><pre><code>&lt;!-- index.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;
+  &lt;title&gt;College Portal&lt;/title&gt;
+  &lt;link rel=&quot;manifest&quot; href=&quot;manifest.json&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;College Information Portal&lt;/h1&gt;
+  &lt;p&gt;Welcome to our college.&lt;/p&gt;
+
+  &lt;script&gt;
+    if (&quot;serviceWorker&quot; in navigator) {
+      navigator.serviceWorker.register(&quot;service-worker.js&quot;);
+    }
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><pre><code>// service-worker.js
+const CACHE_NAME = &quot;college-cache-v1&quot;;
+const FILES = [&quot;./&quot;, &quot;./index.html&quot;, &quot;./offline.html&quot;];
+
+self.addEventListener(&quot;install&quot;, event =&gt; {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache =&gt; cache.addAll(FILES))
+  );
+});
+
+self.addEventListener(&quot;fetch&quot;, event =&gt; {
+  event.respondWith(
+    fetch(event.request).catch(() =&gt; caches.match(event.request)
+      .then(response =&gt; response || caches.match(&quot;./offline.html&quot;)))
+  );
+});</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>PWA = Progressive Web Application.</li><li>Service worker enables caching/offline behavior.</li><li>Manifest describes app metadata.</li><li>Service workers normally require HTTPS, with localhost allowed for development.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="pwa supporting files pwa manifest.json contains pwa metadata. start_url specifies where the installed app starts. display: standalone gives an app-like window.">
+          <div class="head"><div><span class="tag">PWA</span><h3>PWA Supporting Files</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Save the first code as manifest.json.</li><li>Save the second as offline.html.</li><li>Keep all PWA files in the same folder for this simple practical.</li></ol></details>
+          <details><summary>Code</summary><pre><code>{
+  &quot;name&quot;: &quot;College Information Portal&quot;,
+  &quot;short_name&quot;: &quot;College&quot;,
+  &quot;start_url&quot;: &quot;./index.html&quot;,
+  &quot;display&quot;: &quot;standalone&quot;,
+  &quot;background_color&quot;: &quot;#ffffff&quot;,
+  &quot;theme_color&quot;: &quot;#ffffff&quot;
+}</code></pre><pre><code>&lt;!-- offline.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Offline&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;You are Offline&lt;/h1&gt;
+  &lt;p&gt;Please check your internet connection.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>manifest.json contains PWA metadata.</li><li>start_url specifies where the installed app starts.</li><li>display: standalone gives an app-like window.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="2b. simple student record management pwa html + javascript localstorage stores data in the browser. json.stringify converts data to json text. json.parse converts json text back to javascript data.">
+          <div class="head"><div><span class="tag">HTML + JavaScript</span><h3>2B. Simple Student Record Management PWA</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Use this as the PWA index page.</li><li>Use the manifest and service worker from the previous practical.</li><li>Records are stored in localStorage for this simple demo.</li></ol></details>
+          <details><summary>Code</summary><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Student Records&lt;/title&gt;
+  &lt;link rel=&quot;manifest&quot; href=&quot;manifest.json&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Student Record Management&lt;/h1&gt;
+  &lt;input id=&quot;name&quot; placeholder=&quot;Student Name&quot;&gt;
+  &lt;input id=&quot;course&quot; placeholder=&quot;Course&quot;&gt;
+  &lt;button onclick=&quot;addStudent()&quot;&gt;Add Student&lt;/button&gt;
+  &lt;ul id=&quot;list&quot;&gt;&lt;/ul&gt;
+
+&lt;script&gt;
+let students = JSON.parse(localStorage.getItem(&quot;students&quot;) || &quot;[]&quot;);
+
+function showStudents() {
+  const list = document.getElementById(&quot;list&quot;);
+  list.innerHTML = &quot;&quot;;
+  students.forEach((s, i) =&gt; {
+    list.innerHTML += `&lt;li&gt;${s.name} - ${s.course}
+      &lt;button onclick=&quot;removeStudent(${i})&quot;&gt;Delete&lt;/button&gt;&lt;/li&gt;`;
+  });
+}
+
+function addStudent() {
+  students.push({
+    name: document.getElementById(&quot;name&quot;).value,
+    course: document.getElementById(&quot;course&quot;).value
+  });
+  localStorage.setItem(&quot;students&quot;, JSON.stringify(students));
+  showStudents();
+}
+
+function removeStudent(i) {
+  students.splice(i, 1);
+  localStorage.setItem(&quot;students&quot;, JSON.stringify(students));
+  showStudents();
+}
+
+showStudents();
+
+if (&quot;serviceWorker&quot; in navigator)
+  navigator.serviceWorker.register(&quot;service-worker.js&quot;);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>localStorage stores data in the browser.</li><li>JSON.stringify converts data to JSON text.</li><li>JSON.parse converts JSON text back to JavaScript data.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="3b. student data web api asp.net core web api api = application programming interface. json = javascript object notation. get retrieves data. [route] defines the endpoint route.">
+          <div class="head"><div><span class="tag">ASP.NET Core Web API</span><h3>3B. Student Data Web API</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create ASP.NET Core Web API project.</li><li>Create Controllers/StudentController.cs.</li><li>Paste the code and run.</li><li>Open /api/student or test it with Postman GET.</li></ol></details>
+          <details><summary>Code</summary><pre><code>using Microsoft.AspNetCore.Mvc;
+
+[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+public class StudentController : ControllerBase
+{
+    [HttpGet]
+    public IActionResult GetStudents()
+    {
+        var students = new[]
+        {
+            new { Id = 1, Name = &quot;Rahul&quot;, Course = &quot;BSc IT&quot; },
+            new { Id = 2, Name = &quot;Amit&quot;, Course = &quot;BCA&quot; },
+            new { Id = 3, Name = &quot;Priya&quot;, Course = &quot;BSc CS&quot; }
+        };
+
+        return Ok(students);
+    }
+}</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>API = Application Programming Interface.</li><li>JSON = JavaScript Object Notation.</li><li>GET retrieves data.</li><li>[Route] defines the endpoint route.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="4a. crud api — model &amp; dbcontext asp.net core web api + ef core ef core = entity framework core. orm = object relational mapping. dbcontext manages database access. dbset represents an entity/table-like collection.">
+          <div class="head"><div><span class="tag">ASP.NET Core Web API + EF Core</span><h3>4A. CRUD API — Model &amp; DbContext</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create ASP.NET Core Web API.</li><li>Install Microsoft.EntityFrameworkCore.InMemory NuGet package for this simple exam demo.</li><li>Create Student.cs and StudentDbContext.cs.</li><li>Update Program.cs.</li><li>Then add the CRUD controller shown in the next card.</li></ol></details>
+          <details><summary>Code</summary><pre><code>// Student.cs
+public class Student
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = &quot;&quot;;
+    public string Course { get; set; } = &quot;&quot;;
+}
+
+// StudentDbContext.cs
+using Microsoft.EntityFrameworkCore;
+
+public class StudentDbContext : DbContext
+{
+    public StudentDbContext(DbContextOptions&lt;StudentDbContext&gt; options)
+        : base(options) { }
+
+    public DbSet&lt;Student&gt; Students =&gt; Set&lt;Student&gt;();
+}</code></pre><pre><code>// Program.cs essentials
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers();
+builder.Services.AddDbContext&lt;StudentDbContext&gt;(options =&gt;
+    options.UseInMemoryDatabase(&quot;StudentDb&quot;));
+
+var app = builder.Build();
+app.MapControllers();
+app.Run();</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>EF Core = Entity Framework Core.</li><li>ORM = Object Relational Mapping.</li><li>DbContext manages database access.</li><li>DbSet represents an entity/table-like collection.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="4a. crud api — controller asp.net core web api + ef core crud = create, read, update, delete. post = create; get = read; put = update; delete = delete. savechangesasync saves ef core changes.">
+          <div class="head"><div><span class="tag">ASP.NET Core Web API + EF Core</span><h3>4A. CRUD API — Controller</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Run the API.</li><li>POST /api/students with JSON to create.</li><li>GET /api/students to read.</li><li>PUT /api/students/1 to update.</li><li>DELETE /api/students/1 to delete.</li><li>Use Postman Body → raw → JSON for POST/PUT.</li></ol></details>
+          <details><summary>Code</summary><pre><code>using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+public class StudentsController : ControllerBase
+{
+    private readonly StudentDbContext db;
+    public StudentsController(StudentDbContext db) =&gt; this.db = db;
+
+    [HttpGet]
+    public async Task&lt;ActionResult&lt;List&lt;Student&gt;&gt;&gt; Get()
+        =&gt; await db.Students.ToListAsync();
+
+    [HttpGet(&quot;{id}&quot;)]
+    public async Task&lt;ActionResult&lt;Student&gt;&gt; Get(int id)
+    {
+        var s = await db.Students.FindAsync(id);
+        return s == null ? NotFound() : s;
+    }
+
+    [HttpPost]
+    public async Task&lt;ActionResult&lt;Student&gt;&gt; Post(Student s)
+    {
+        db.Students.Add(s);
+        await db.SaveChangesAsync();
+        return Ok(s);
+    }
+
+    [HttpPut(&quot;{id}&quot;)]
+    public async Task&lt;IActionResult&gt; Put(int id, Student s)
+    {
+        var old = await db.Students.FindAsync(id);
+        if (old == null) return NotFound();
+        old.Name = s.Name;
+        old.Course = s.Course;
+        await db.SaveChangesAsync();
+        return Ok(old);
+    }
+
+    [HttpDelete(&quot;{id}&quot;)]
+    public async Task&lt;IActionResult&gt; Delete(int id)
+    {
+        var s = await db.Students.FindAsync(id);
+        if (s == null) return NotFound();
+        db.Students.Remove(s);
+        await db.SaveChangesAsync();
+        return NoContent();
+    }
+}</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>CRUD = Create, Read, Update, Delete.</li><li>POST = Create; GET = Read; PUT = Update; DELETE = Delete.</li><li>SaveChangesAsync saves EF Core changes.</li></ul></details>
+        </article>
+
+        <article class="card" data-search="4b. factorial api + postman asp.net core web api postman tests http apis. get retrieves a resource/result. factorial of 5 = 5×4×3×2×1 = 120. 0! = 1.">
+          <div class="head"><div><span class="tag">ASP.NET Core Web API</span><h3>4B. Factorial API + Postman</h3></div>
+          <button class="copy" onclick="copyCode(this)">Copy Code</button></div>
+          <details open><summary>Steps</summary><ol><li>Create ASP.NET Core Web API.</li><li>Add FactorialController.cs.</li><li>Run the project and note the localhost port.</li><li>In Postman choose GET.</li><li>Request: https://localhost:PORT/api/factorial/5</li><li>Click Send. Expected factorial is 120.</li></ol></details>
+          <details><summary>Code</summary><pre><code>using Microsoft.AspNetCore.Mvc;
+
+[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+public class FactorialController : ControllerBase
+{
+    [HttpGet(&quot;{number}&quot;)]
+    public IActionResult GetFactorial(int number)
+    {
+        if (number &lt; 0)
+            return BadRequest(&quot;Number must be non-negative.&quot;);
+
+        long factorial = 1;
+        for (int i = 1; i &lt;= number; i++)
+            factorial *= i;
+
+        return Ok(new { Number = number, Factorial = factorial });
+    }
+}</code></pre></details>
+          <details><summary>Viva Quick Points</summary><ul><li>Postman tests HTTP APIs.</li><li>GET retrieves a resource/result.</li><li>Factorial of 5 = 5×4×3×2×1 = 120.</li><li>0! = 1.</li></ul></details>
+        </article>
+</section>
+<p class="small">Tip: Open the code section only when needed. Use the search box during revision.</p>
+</main>
+<script>
+function copyCode(btn){
+  const card=btn.closest('.card');
+  const codes=[...card.querySelectorAll('code')].map(x=>x.innerText).join('\n\n');
+  navigator.clipboard.writeText(codes).then(()=>{
+    const old=btn.innerText; btn.innerText='Copied!';
+    setTimeout(()=>btn.innerText=old,1000);
+  });
+}
+function filterCards(){
+  const q=document.getElementById('search').value.toLowerCase().trim();
+  document.querySelectorAll('.card').forEach(c=>{
+    c.classList.toggle('hidden', q && !(c.innerText.toLowerCase().includes(q) || c.dataset.search.includes(q)));
+  });
+}
+</script>
+</body></html>
